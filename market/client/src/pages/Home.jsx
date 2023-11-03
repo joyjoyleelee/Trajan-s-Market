@@ -1,7 +1,7 @@
 import { Button, Container, Modal } from '@mui/material';
 import React, { useState } from 'react';
 // import LoginModal from '../../components/home/LoginModal';
-// import SignupModal from '../../components/home/SignupModal';
+import SignupModal from '../../components/home/SignupModal';
 
 const Home = () => {
   const [logOpen, setLog] = useState(false)
