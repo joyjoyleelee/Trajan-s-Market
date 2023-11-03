@@ -8,3 +8,12 @@ import json
 import html
 from bson.binary import Binary
 import base64
+
+app = Flask(__name__) #setting this equal to the file name (web.py)
+
+#Establish the mongo database
+mongo_client = MongoClient('mongo')
+db = mongo_client["colosseum"]
+chat_collection = db["listing"]
+user_collection = db["users"]
+auth_token_collection = db["auth_tokens"]
