@@ -20,7 +20,7 @@ const SignupModal = ({handleClose}) =>{
 
     const sendData = () =>{
         //TODO: Implement send to backend
-        handleClose;
+        handleClose();
     }
 
     return (
@@ -32,19 +32,19 @@ const SignupModal = ({handleClose}) =>{
                        minHeight: 'auto',
                        padding:'10px',}}>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                        label="Username"
-                        required
-                        type="text"
-                        variant="outlined"
-                        value={username}
-                        onChange={handleUser}
-                    />
+            <Grid item xs={12}>
+                <TextField
+                    label="Username"
+                    required
+                    type="text"
+                    variant="outlined"
+                    value={username}
+                    onChange={handleUser}
+                />
             </Grid>
             <Grid item xs={12}>
                 <TextField
-                    label="Confirm Password"
+                    label="Password"
                     required
                     type="password"
                     variant="outlined"
@@ -54,12 +54,12 @@ const SignupModal = ({handleClose}) =>{
             </Grid>
             <Grid item xs={12}>
                 <TextField
-                    label="Confirm Password"
+                    label="Display Name"
                     required
-                    type="password"
+                    type="text"
                     variant="outlined"
-                    onChange={handlePass}
-                    value={password}
+                    onChange={handleDisName}
+                    value={disName}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -86,3 +86,5 @@ const SignupModal = ({handleClose}) =>{
     </Container>
     );
 };
+
+export default SignupModal
