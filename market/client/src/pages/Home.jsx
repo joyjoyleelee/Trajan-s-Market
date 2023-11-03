@@ -1,4 +1,4 @@
-import { Button, Grid, Container, Modal } from '@mui/material';
+import { Button, Container, Modal } from '@mui/material';
 import React, { useState } from 'react';
 // import LoginModal from '../../components/home/LoginModal';
 // import SignupModal from '../../components/home/SignupModal';
@@ -26,35 +26,48 @@ const Home = () => {
   return (
        <Container maxWidth='auto'
              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'lightgrey',
-                minHeight: 'auto',
-                padding: '10px',
+                 backgroundColor: 'lightgrey',
+                 minHeight: '100vh',
+                 display: 'flex',
+                 flexDirection: 'column',
+                 alignItems: 'center',
+                 justifyContent: 'center',
+                 borderRadius: '10px',
              }}>
-         <Grid container>
-            <Grid item sx={{ margin: 'auto' }}>
-              <Button
-                onClick={handleLogOpen}
-                variant='contained'
-                color='primary'
-                sx={{ width: '150px', height: '50px'}}
-              >
-                  Login
-              </Button>
-            </Grid>
-            <Grid item sx={{ margin: 'auto' }}>
-              <Button
-                onClick={handleRegOpen}
-                variant='contained'
-                color='primary'
-                sx={{ width: '150px', height: '50px'}}
-              >
-                  Register
-              </Button>
-            </Grid>
-         </Grid>
+         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <Button
+              onClick={handleLogOpen}
+              variant="contained"
+              color="primary"
+              sx={{ width: '150px', height: '50px' }}
+            >
+              Login
+            </Button>
+            <Button
+              onClick={handleRegOpen}
+              variant="contained"
+              color="primary"
+              sx={{ width: '150px', height: '50px' }}
+            >
+              Register
+            </Button>
+             <Modal
+                open={logOpen}
+                aria-labelledby='modal-modal-title'
+                aria-describedby='modal-modal-description'>
+                    <div>
+                        <LoginModal open={logOpen} handleClose={handleLogClose} />
+                    </div>
+             </Modal>
+             <Modal
+                open={regOpen}
+                aria-labelledby='modal-title'
+                aria-describedby='modal-description'>
+                    <div>
+                        <LoginModal open={regOpen} handleClose={handleRegClose} />
+                    </div>
+             </Modal>
+         </div>
        </Container>
   )
 }
