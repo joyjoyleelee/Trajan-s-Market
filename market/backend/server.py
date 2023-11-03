@@ -17,3 +17,9 @@ db = mongo_client["colosseum"]
 chat_collection = db["listing"]
 user_collection = db["users"]
 auth_token_collection = db["auth_tokens"]
+
+@app.route("/") #index.html
+def home():
+    response = make_response(render_template("index.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
