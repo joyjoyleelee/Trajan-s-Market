@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import React from 'react';
 import Navbar from '../components/Navbar'
+import StaticListing from "../components/StaticListing";
 
 const MyAuction = () => {
+
+    const tempPropsList = [
+        {
+            image: "favicon.ico",
+            title: "Child Slave",
+            description: "straight from Mongolia",
+            price: 1000,
+            end: 202311302359, // YYYYMMDD, time (military)
+            bidder: "none",
+        },
+        {
+            image: "favicon.ico",
+            title: "Adult Slave",
+            description: "straight from Czech Republic",
+            price: 3000,
+            end: 202311302359, // YYYYMMDD, time (military)
+            bidder: "none",
+        },
+    ];
+
     return (
         <>
             <Navbar></Navbar>
-            <h1>404 MyAuction Not Implemented</h1>
+            <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+                {tempPropsList.map((tempProp, index) => (
+                    <Listing key={index} {...tempProp} />
+                ))}
+            </div>
         </>
     )
 }

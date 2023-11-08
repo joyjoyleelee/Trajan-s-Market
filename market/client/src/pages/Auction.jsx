@@ -2,6 +2,7 @@ import React from 'react';
 import Listing from '../components/auction/Listing';
 import Navbar from '../components/Navbar'
 
+
 const Auction = () => {
 
     console.log("Auction page reached");
