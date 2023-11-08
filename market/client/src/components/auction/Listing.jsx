@@ -92,7 +92,7 @@ const Listing = (props) => {
                         <>{props.end}</>
                     </Typography>
                     <Typography id="modal-modal-bidder" sx={{ mt: 2 }}>
-                        <>"Current Bidder: "+ {props.bidder}</>
+                        <>Current Bidder: {props.bidder}</>
                     </Typography>
                     <TextField
                         label="New Bid"

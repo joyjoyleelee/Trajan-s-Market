@@ -12,15 +12,6 @@ const Listing = (props) => {
         setOpen(false);
     };
 
-    const newBid = (e) => {
-        setBid(e.target.value);
-    };
-
-    const handleNewBid = () => {
-        // TODO: Add code to update price and current bidder
-        handleModalClose();
-    };
-
     return (
         <>
             <Badge badgeContent={"$" + props.price} color="success">
@@ -91,7 +82,7 @@ const Listing = (props) => {
                         <>{props.end}</>
                     </Typography>
                     <Typography id="modal-modal-bidder" sx={{ mt: 2 }}>
-                        <>"Current Bidder: "+ {props.bidder}</>
+                        <>Current Bidder: {props.bidder}</>
                     </Typography>
                 </Box>
             </Modal>
