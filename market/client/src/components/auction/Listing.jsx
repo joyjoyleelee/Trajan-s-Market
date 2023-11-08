@@ -25,7 +25,7 @@ const Listing = (props) => {
     return (
         <>
             <Badge badgeContent={"$" + props.price} color="success">
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: 200, height: 275 }}>
                     <CardActionArea onClick={handleModalOpen}>
                         <CardMedia
                             component="img"
@@ -85,14 +85,14 @@ const Listing = (props) => {
                     <Typography id="modal-item-description" sx={{ mt: 2 }}>
                         <i>{props.description}</i>
                     </Typography>
-                    <Typography id="modal-item-price" variant="h5" component="h4">
-                        <b>{"$" + props.price}</b>
+                    <Typography id="modal-item-price" sx={{ mt: 2 }}>
+                        <>{"$" + props.price}</>
                     </Typography>
-                    <Typography id="modal-item-end" variant="h5" component="h4">
-                        <b>{props.end}</b>
+                    <Typography id="modal-item-end" sx={{ mt: 2 }}>
+                        <>{props.end}</>
                     </Typography>
-                    <Typography id="modal-modal-bidder" variant="h5" component="h4">
-                        <b>{props.bidder}</b>
+                    <Typography id="modal-modal-bidder" sx={{ mt: 2 }}>
+                        <>"Current Bidder: "+ {props.bidder}</>
                     </Typography>
                     <TextField
                         label="New Bid"
