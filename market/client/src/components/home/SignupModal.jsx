@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 const SignupModal = ({handleClose}) =>{
     const [username,setUser] = useState('')
     const [password, setPass] = useState('')
-    const [disName, setDisName] = useState('')
 
     const handleUser = (e) => {
         setUser(e.target.value);
@@ -12,10 +11,6 @@ const SignupModal = ({handleClose}) =>{
 
     const handlePass = (e) => {
         setPass(e.target.value);
-    };
-
-    const handleDisName = (e) => {
-        setDisName(e.target.value);
     };
 
     const sendData = () =>{
@@ -52,16 +47,6 @@ const SignupModal = ({handleClose}) =>{
                     value={password}
                 />
             </Grid>
-            <Grid item xs={12}>
-                <TextField
-                    label="Display Name"
-                    required
-                    type="text"
-                    variant="outlined"
-                    onChange={handleDisName}
-                    value={disName}
-                />
-            </Grid>
             <Grid item xs={6}>
                 <Button
                     onClick={sendData}
@@ -69,7 +54,7 @@ const SignupModal = ({handleClose}) =>{
                     color="primary"
                     sx={{ width: '150px', height: '50px'}}
                 >
-                    Change Password
+                    Register
                 </Button>
             </Grid>
             <Grid item xs={6}>

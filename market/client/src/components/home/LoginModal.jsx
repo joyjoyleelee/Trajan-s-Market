@@ -54,7 +54,7 @@ const SignupModal = ({handleClose}) =>{
                     color="primary"
                     sx={{ width: '150px', height: '50px'}}
                 >
-                    Change Password
+                    Login
                 </Button>
             </Grid>
             <Grid item xs={6}>
