@@ -1,9 +1,13 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
 const Winnings = () => {
-  return (
-    <h1>404 Winnings Found</h1>
-  )
+    return (
+        <>
+            <Navbar></Navbar>
+            <h1>404 Winnings Not Implemented</h1>
+        </>
+    )
 }
 
 export default Winnings
