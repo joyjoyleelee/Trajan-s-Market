@@ -1,9 +1,8 @@
 import React from 'react'
 import {Badge, Card, CardActionArea, CardContent, CardMedia,
-    Modal, Typography, Box, Button, TextField,} from "@mui/material";
+    Modal, Typography, Box, Button } from "@mui/material";
 
 const Listing = (props) => {
-    const [bidPrice, setBid] = React.useState(0);
     const [open, setOpen] = React.useState(false);
 
     const handleModalOpen = () => {
@@ -13,18 +12,9 @@ const Listing = (props) => {
         setOpen(false);
     };
 
-    const newBid = (e) => {
-        setBid(e.target.value);
-    };
-
     const tempString = props.end.toString();
     const endString = 'Auction Ends: ' + tempString.substring(4,6) + '/' + tempString.substring(6,8) + ', ' +
         tempString.substring(0,4) + '  ' + tempString.substring(8,10) + ':' + tempString.substring(10,12);
-
-    const handleNewBid = () => {
-        // TODO: Add code to update price and current bidder
-        handleModalClose();
-    };
 
     return (
         <>
@@ -98,24 +88,6 @@ const Listing = (props) => {
                     <Typography id="modal-modal-bidder" sx={{ mt: 2 }}>
                         <>Current Bidder: {props.bidder}</>
                     </Typography>
-                    <TextField
-                        label="New Bid"
-                        required
-                        type="text"
-                        variant="outlined"
-                        onChange={newBid}
-                        value={bidPrice}
-                    />
-                    <Button
-                        sx={{
-                            position: 'absolute',
-                            bottom: 5,
-                            right: 5,
-                        }}
-                        onClick={handleNewBid}
-                    >
-                        Place Bid
-                    </Button>
                 </Box>
             </Modal>
         </>

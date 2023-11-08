@@ -12,6 +12,10 @@ const Listing = (props) => {
         setOpen(false);
     };
 
+    const tempString = props.end.toString();
+    const endString = 'Auction Ended: ' + tempString.substring(4,6) + '/' + tempString.substring(6,8) + ', ' +
+        tempString.substring(0,4) + '  ' + tempString.substring(8,10) + ':' + tempString.substring(10,12);
+
     return (
         <>
             <Badge badgeContent={"$" + props.price} color="success">
@@ -79,7 +83,7 @@ const Listing = (props) => {
                         <>{"$" + props.price}</>
                     </Typography>
                     <Typography id="modal-item-end" sx={{ mt: 2 }}>
-                        <>{props.end}</>
+                        <>{endString}</>
                     </Typography>
                     <Typography id="modal-modal-bidder" sx={{ mt: 2 }}>
                         <>Current Bidder: {props.bidder}</>

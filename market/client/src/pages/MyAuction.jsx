@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar'
-import StaticListing from "../components/StaticListing";
+import StaticListing from "../components/myauction/StaticListing";
 
 const MyAuction = () => {
 
