@@ -28,7 +28,7 @@ const MyAuction = () => {
             <Navbar></Navbar>
             <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
                 {tempPropsList.map((tempProp, index) => (
-                    <Listing key={index} {...tempProp} />
+                    <StaticListing key={index} {...tempProp} />
                 ))}
             </div>
         </>
