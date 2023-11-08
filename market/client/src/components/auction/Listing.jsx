@@ -3,7 +3,7 @@ import {Badge, Card, CardActionArea, CardContent, CardMedia,
     Modal, Typography, Box, Button, TextField,} from "@mui/material";
 
 const Listing = (props) => {
-    const [bidPrice, setBid] = 0
+    const [bidPrice, setBid] = React.useState(0);
     const [open, setOpen] = React.useState(false);
 
     const handleModalOpen = () => {
@@ -19,8 +19,8 @@ const Listing = (props) => {
 
     const handleNewBid = () => {
         // TODO: Add code to update price and current bidder
-        handleModalClose()
-    }
+        handleModalClose();
+    };
 
     return (
         <>
@@ -76,8 +76,8 @@ const Listing = (props) => {
                     <img
                         src={props.image}
                         alt="Unable to load image"
-                        width="800"
-                        height="800"
+                        width="140"
+                        height="140"
                     />
                     <Typography id="modal-item-title" variant="h6" component="h2">
                         {props.title}
