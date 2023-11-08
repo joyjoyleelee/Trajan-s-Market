@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import StaticListing from "../components/winnings/StaticListing";
+import axios from "axios";
 
 const Winnings = () => {
 
+    // Temporary list for items in auctions won
     const tempPropsList = [
         {
             image: "favicon.ico",
@@ -22,6 +24,19 @@ const Winnings = () => {
             bidder: "none",
         },
     ];
+
+    // //Creating listings object for populating
+    // const [listings, setListings] = useState([])
+    //
+    // // Code below to populate the listings
+    // axios.post('/', {}) //Fill in path for winnings listing
+    //     .then(function (response) {
+    //         setListings(response);
+    //         console.log(response);
+    //     })
+    //     .catch(function (error) {
+    //         console.log('Populating winnings listing did not work: ', error);
+    //     });
 
     return (
         <>

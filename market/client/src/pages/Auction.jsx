@@ -7,6 +7,7 @@ const Auction = () => {
 
     console.log("Auction page reached");
 
+    // Temporary list for items in auction
     const tempPropsList = [
         {
             image: "favicon.ico",
