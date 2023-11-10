@@ -15,7 +15,7 @@ const SignupModal = ({handleClose}) =>{
 
     const sendData = async () =>{
         //TODO: Implement send to backend
-        const response = await fetch('backend/register', {
+        const response = await fetch('backend/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
