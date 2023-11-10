@@ -2,8 +2,8 @@ import { TextField, Button, Container, Grid } from '@mui/material';
 import React, { useState } from 'react';
 
 const SignupModal = ({handleClose}) =>{
-    const [username,setUser] = useState('')
-    const [password, setPass] = useState('')
+    const [usernames,setUser] = useState('')
+    const [passwords, setPass] = useState('')
 
     const handleUser = (e) => {
         setUser(e.target.value);
@@ -13,8 +13,24 @@ const SignupModal = ({handleClose}) =>{
         setPass(e.target.value);
     };
 
-    const sendData = () =>{
+    const sendData = async () =>{
         //TODO: Implement send to backend
+        const response = await fetch('backend/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {
+                username: usernames,
+                password: passwords,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('User was not registered');
+        }
+
+        console.log(response.json());
         handleClose();
     }
 
@@ -33,7 +49,7 @@ const SignupModal = ({handleClose}) =>{
                     required
                     type="text"
                     variant="outlined"
-                    value={username}
+                    value={usernames}
                     onChange={handleUser}
                 />
             </Grid>
@@ -44,7 +60,7 @@ const SignupModal = ({handleClose}) =>{
                     type="password"
                     variant="outlined"
                     onChange={handlePass}
-                    value={password}
+                    value={passwords}
                 />
             </Grid>
             <Grid item xs={6}>
