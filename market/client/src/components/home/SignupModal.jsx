@@ -15,18 +15,19 @@ const SignupModal = ({handleClose}) =>{
 
     const sendData = async () =>{
         //TODO: Implement send to backend
-        const response = await fetch('backend/register', {
+        const response = await fetch('http://localhost:8080/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 username: usernames,
                 password: passwords,
-            },
+            }),
         });
 
         if (!response.ok) {
+            console.log(response.ok)
             throw new Error('User was not registered');
         }
 
