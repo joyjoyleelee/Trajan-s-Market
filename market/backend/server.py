@@ -41,6 +41,7 @@ def home():
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
 @app.route("/register", methods =['POST'])
 def process_register():
+    print("Register path reached")
     data = request.json
     user_collection.insert_one(data)
     return jsonify({"message": "User successfully added"})
