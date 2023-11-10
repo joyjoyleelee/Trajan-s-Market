@@ -1,7 +1,7 @@
 import { Button, Container, Modal } from '@mui/material';
 import React, { useState } from 'react';
-// import LoginModal from '../../components/home/LoginModal';
-// import SignupModal from '../../components/home/SignupModal';
+import LoginModal from '../components/home/LoginModal';
+import SignupModal from '../components/home/SignupModal';
 
 const Home = () => {
   const [logOpen, setLog] = useState(false)
@@ -64,7 +64,7 @@ const Home = () => {
                 aria-labelledby='modal-title'
                 aria-describedby='modal-description'>
                     <div>
-                        <LoginModal open={regOpen} handleClose={handleRegClose} />
+                        <SignupModal open={regOpen} handleClose={handleRegClose} />
                     </div>
              </Modal>
          </div>
