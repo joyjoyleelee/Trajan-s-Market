@@ -1,1 +1,23 @@
-adding file so folder exists
+# Trajan's Market
+this is for our 312 project guys :)
+
+## Tasks
+### LO1: Custom Posts (with images)
+- [ ] Authenticate user 
+    - [ ] Make post with the following
+        - [ ] Title/Name of Item
+        - [ ] Description of Item
+        - [ ] Image of Item
+        - [ ] Starting Price of Item
+        - [ ] Auction duration/end time
+
+### LO2: Websocket Interaction
+- [ ] Display current bid + time remaining for each auction
+- [ ] Close all bids when auction closes
+- [ ] Disallow user to bit on own auction
+
+
+### LO3: App Specific Features
+- [ ] Track winners of each auction
+    - [ ] Create user's "auctions won" page
+    - [ ] Create user's "auctions created" page
