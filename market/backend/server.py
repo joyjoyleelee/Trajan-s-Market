@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, url_for, request, send_from_directory, redirect
+from flask import Flask, render_template, make_response, jsonify, request
 from pymongo import MongoClient
 import json
 import html
@@ -37,11 +37,16 @@ def home():
 #     return response
 
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
-@app.route("/register", methods =['POST']):
+@app.route("/register", methods =['POST'])
+def process_register():
+    data = request.json
+    user_collection.insert_one(data)
+    return jsonify({"message": "User successfully added"})
+
 
 
 #Set up the login form-----------------------------------------------------------------------------------------------------------------------------
-@app.route("/login", methods =['POST']):
+@app.route("/login", methods =['POST'])
 
 
 
