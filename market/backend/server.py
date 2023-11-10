@@ -5,6 +5,8 @@ import bcrypt
 import hashlib
 import json
 import html
+#import os
+
 from bson.binary import Binary
 import base64
 
@@ -28,6 +30,8 @@ xsrf_token_collection = db["xsrf"]
 #Set up the home page ----------------------------------------------------------------------------------------------------------------------------
 @app.route("/") #index.html
 def home():
+    #index_html
+    app = Flask(__name__, template_folder='../../client/public')
     response = make_response(render_template("index.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
