@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from flask import Flask, render_template, make_response, url_for, request, send_from_directory, redirect
 from pymongo import MongoClient
 from secrets import token_urlsafe
@@ -8,13 +8,13 @@ import json
 import html
 from bson.binary import Binary
 import base64
-=======
+
 from flask import Flask, render_template, make_response, jsonify, request
 from pymongo import MongoClient
 import json
 import html
 
->>>>>>> origin/front-end-react
+
 
 app = Flask(__name__) #setting this equal to the file name (web.py)
 
@@ -36,16 +36,12 @@ xsrf_token_collection = db["xsrf"]
 #Set up the home page ----------------------------------------------------------------------------------------------------------------------------
 @app.route("/") #index.html
 def home():
-<<<<<<< HEAD
-=======
-    #index_html
-    #app = Flask(__name__, template_folder='../../client/public')
->>>>>>> origin/front-end-react
+
     response = make_response(render_template("index.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
-<<<<<<< HEAD
+
 @app.route("/<path:file>")
 def pathRoute(file):
     response = make_response(send_from_directory("static", file), 200)
@@ -53,15 +49,13 @@ def pathRoute(file):
     return response
 
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
-@app.route("/register", methods =['GET', 'POST'])
-
 #Set up the login form-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/login", methods =['GET', 'POST'])
 
 @app.route("/chat-message", methods = ["POST"])
 def makePost():
     post = request.data.decode() # Request post as a string
-    post = json.loads(post) # Load Post as a Dictionary in format title: message: xsrf:
+    post = json.loads(ßpost) # Load Post as a Dictionary in format title: message: xsrf:
     username = "Guest"
 
     # Verify user via authentication token
@@ -91,7 +85,7 @@ def makePost():
     response = make_response("Post sent:" + str(post), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
-=======
+
 # @app.route("/<path:file>")
 # def pathRoute(file):
 #     response = make_response(send_from_directory("static", file), 200)
@@ -110,7 +104,7 @@ def process_register():
 #Set up the login form-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/login", methods =['POST'])
 
->>>>>>> origin/front-end-react
+
 
 
 def postsFromDB():
@@ -126,7 +120,6 @@ def postsFromDB():
     return ret_list
 
 
-<<<<<<< HEAD
 @app.route("/chat-history", methods = ["GET"])
 def readPost():
     all_posts = postsFromDB()
@@ -162,7 +155,6 @@ def addLike():
     return response
 
 
-=======
->>>>>>> origin/front-end-react
+
 
 app.run(host = "0.0.0.0", port = 8080)
