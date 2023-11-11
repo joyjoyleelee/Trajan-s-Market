@@ -1,7 +1,7 @@
 from flask import Flask, render_template, make_response, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
-import json
+import bcrypt
 import html
 
 
@@ -41,10 +41,29 @@ def home():
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
 @app.route("/register", methods =['POST'])
 def process_register():
-    print("Register path reached")
     data = request.json
-    user_collection.insert_one(data)
-    return jsonify({"message": "User successfully added"})
+    if user_collection.find_one({"username": data.get("username")}) is None:
+        # Store username and salted, hashed password in database
+        salt = bcrypt.gensalt()
+        the_hash = bcrypt.hashpw(data.get("password").encode(), salt)
+        user_collection.insert_one({"username": data.get("username"), "password": the_hash})
+
+        # Possibly create new response headers before returning response
+        #response = make_response(render_template("index.html"), 200)
+        #response.headers["X-Content-Type-Options"] = "nosniff"
+        return jsonify({"message": "User successfully added", "code": 1})
+    # If the user already exists, give an error
+    else:
+        return jsonify({"message": "Username already exists", "code":0})
+
+
+
+# CODE BELOW: working register without any authentication
+# def process_register():
+#     print("Register path reached")
+#     data = request.json
+#     user_collection.insert_one(data)
+#     return jsonify({"message": "User successfully added"})
 
 
 
