@@ -10,6 +10,7 @@ from bson.binary import Binary
 import base64
 
 from flask import Flask, render_template, make_response, jsonify, request
+from flask_cors import CORS
 from pymongo import MongoClient
 import json
 import html
@@ -17,6 +18,7 @@ import html
 
 
 app = Flask(__name__) #setting this equal to the file name (web.py)
+CORS(app)
 
 #Establish the mongo database
 mongo_client = MongoClient('localhost')
@@ -95,6 +97,7 @@ def makePost():
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
 @app.route("/register", methods =['POST'])
 def process_register():
+    print("Register path reached")
     data = request.json
     user_collection.insert_one(data)
     return jsonify({"message": "User successfully added"})
