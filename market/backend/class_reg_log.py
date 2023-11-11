@@ -1,5 +1,3 @@
-from flask import Flask, render_template, make_response, url_for, request, send_from_directory, redirect
-from pymongo import MongoClient
 from secrets import token_urlsafe
 import bcrypt
 import hashlib
@@ -10,31 +8,32 @@ import base64
 
 class reg_log:
 
-    def register():
-        #print(request.form.get('username_reg')) # -> gets the username input
-        #print(request.get_data()) # -> b'username_reg=hi&password_reg=here'
-        if (request.method == 'POST'):
-            #Check if the user does not exist yet -> valid
-            if (user_collection.find_one({"username": request.form['username_reg']}) == None):
-                #Store username and salted, hashed password in database
-                #print("this is a test")
-                print(request)
-                salt = bcrypt.gensalt()
-                the_hash = bcrypt.hashpw(request.form['password_reg'].encode(), salt)
-                user_collection.insert_one({"username": request.form['username_reg'], "password": the_hash})
 
-                #Make response - USER DOES NOT EXIST -> GOOD
-                response = make_response(render_template("index.html"), 200)
-                response.headers["X-Content-Type-Options"] = "nosniff"
-            #If the user already exists, give an error
-            else:
-                #Make response - USER ALREADY EXISTS -> NOT GOOD
-                response = make_response("User already exists", 404)
-                response.headers["X-Content-Type-Options"] = "nosniff"
-            return response
+    # json.loads take a string as input and returns a dictionary as output.
+    # json.dumps take a dictionary as input and returns a string as output.
+    #json_dict = {"username": "user", "password": 123}
+    def register(self, json_dict):
+        #Check if the user does not exist yet -> valid
+        if (user_collection.find_one({"username": request.form['username_reg']}) == None):
+            #Store username and salted, hashed password in database
+            #print("this is a test")
+            print(request)
+            salt = bcrypt.gensalt()
+            the_hash = bcrypt.hashpw(request.form['password_reg'].encode(), salt)
+            user_collection.insert_one({"username": request.form['username_reg'], "password": the_hash})
+
+            #Make response - USER DOES NOT EXIST -> GOOD
+            response = make_response(render_template("index.html"), 200)
+            response.headers["X-Content-Type-Options"] = "nosniff"
+        #If the user already exists, give an error
+        else:
+            #Make response - USER ALREADY EXISTS -> NOT GOOD
+            response = make_response("User already exists", 404)
+            response.headers["X-Content-Type-Options"] = "nosniff"
+        return response
 
 
-    def login():
+    def login(self):
         #print(request.get_data()) # -> b'username_login=hi&password_login=here'
         #DB represents database
         user_database = user_collection.find_one({"username": request.form['username_login']})
