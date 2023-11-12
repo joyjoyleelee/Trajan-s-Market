@@ -1,13 +1,23 @@
-import React from 'react'
+import React, {useEffect, useState} from "react";
 import {Badge, Card, CardActionArea, CardContent, CardMedia,
     Modal, Typography, Box, Button, TextField,} from "@mui/material";
+import NewListingModal from "./NewListingModal";
 
 
-const NewListing = (props) => {
+const NewListingButton = (props) => {
+    const [listOpen, setList] = useState(false)
+
+    const handleLogOpen = () =>{
+        setList(true)
+    }
+
+    const handleLogClose = () => {
+        setList (false)
+    }
 
     const handleNewBid = async () => {
 
-        const response = await fetch('http://localhost:8080/newListing', {
+        const response = await fetch('http://localhost:8080/create-listing', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,14 +42,26 @@ const NewListing = (props) => {
                     sx={{
                         position: 'absolute',
                         right: 5,
+                        width: '150px',
+                        height: '50px',
                     }}
+                    variant="contained"
+                    color="primary"
                     onClick={handleNewBid}
                 >
                     Make New Request
                 </Button>
+                <Modal
+                open={listOpen}
+                aria-labelledby='modal-title'
+                aria-describedby='modal-description'>
+                    <div>
+                        <NewListingModal open={listOpen} handleClose={handleLogClose} />
+                    </div>
+             </Modal>
             </>
         );
 
 }
 
-export default NewListing
+export default NewListingButton
