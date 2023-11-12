@@ -9,6 +9,7 @@ const Listing = (props) => {
     const handleModalOpen = () => {
         setOpen(true);
     };
+
     const handleModalClose = () => {
         setOpen(false);
     };
