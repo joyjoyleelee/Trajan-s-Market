@@ -1,8 +1,9 @@
 import { TextField, Button, Container, Grid } from '@mui/material';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const NewListingModal = ({handleLogClose}) =>{
+const NewListingModal = ({handleClose}) =>{
     const [name, setName] = useState("");
     const [descr, setDescr] = useState("");
     const [price, setPrice] = useState(1.0);
@@ -25,9 +26,25 @@ const NewListingModal = ({handleLogClose}) =>{
         setEndDate(date);
     };
 
-    const sendData = () =>{
+    const sendData = async () =>{
     //     Send http
-        handleLogClose()
+        const response = await fetch('http://localhost:8080/create-listing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                item_name: name,
+                item_description: descr,
+                end_date: endDate,
+                price: price,
+            }),
+        });
+        if (!response.ok) {
+            console.log(response.ok)
+            throw new Error('User was not registered');
+        }
+        handleClose();
     }
 
     const handlePhoto = (event) => {
@@ -95,12 +112,12 @@ const NewListingModal = ({handleLogClose}) =>{
                     color="primary"
                     sx={{ width: '150px', height: '50px'}}
                 >
-                    Register
+                    Create Listing
                 </Button>
             </Grid>
             <Grid item xs={6}>
                 <Button
-                    onClick={handleLogClose}
+                    onClick={handleClose}
                     variant="contained"
                     color="primary"
                     sx={{ width: '150px', height: '50px'}}

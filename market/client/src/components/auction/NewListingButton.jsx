@@ -49,7 +49,7 @@ const NewListingButton = (props) => {
                     color="primary"
                     onClick={handleNewBid}
                 >
-                    Make New Request
+                    Make New Listing
                 </Button>
                 <Modal
                 open={listOpen}
