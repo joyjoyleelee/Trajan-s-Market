@@ -1,12 +1,13 @@
 import { TextField, Button, Container, Grid } from '@mui/material';
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
 
 const NewListingModal = ({handleLogClose}) =>{
-    const [name, setName] = setState("");
-    const [descr, setDescr] = setState("");
-    const [price, setPrice] = setPrice(1.0);
-    const [endDate, setEndDate] = setState(null);
-    const [photo, setPhoto] = setState(null);
+    const [name, setName] = useState("");
+    const [descr, setDescr] = useState("");
+    const [price, setPrice] = useState(1.0);
+    const [endDate, setEndDate] = useState(null);
+    const [photo, setPhoto] = useState(null);
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -29,6 +30,11 @@ const NewListingModal = ({handleLogClose}) =>{
         handleLogClose()
     }
 
+    const handlePhoto = (event) => {
+        const file = event.target.files[0];
+        setPhoto(file);
+    };
+
     return (
         <Container maxWidth="auto"
                    style={{ display: 'flex',
@@ -38,8 +44,8 @@ const NewListingModal = ({handleLogClose}) =>{
                        minHeight: 'auto',
                        padding:'10px',}}>
             <Grid container spacing={2}>
-            <Grid>
-            {/*  Photo  */}
+            <Grid item xs={12}>
+                <input type="file" accept="image/*" onChange={handlePhoto} />
             </Grid>
             <Grid item xs={12}>
                 <TextField
@@ -73,8 +79,14 @@ const NewListingModal = ({handleLogClose}) =>{
                     value={price}
                 />
             </Grid>
-            <Grid>
-            {/*    DATE*/}
+            <Grid item xs={12}>
+                <h2>Select Auction End Date</h2>
+                <DatePicker
+                    selected={endDate}
+                    onChange={handleDate}
+                    showTimeSelect
+                    dateFormat="Pp"
+                />
             </Grid>
             <Grid item xs={6}>
                 <Button

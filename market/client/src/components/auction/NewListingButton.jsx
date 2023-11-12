@@ -5,36 +5,35 @@ import NewListingModal from "./NewListingModal";
 
 
 const NewListingButton = (props) => {
-    const [listOpen, setList] = useState(false)
+    const [listOpen, setList] = useState(false);
 
     const handleLogOpen = () =>{
-        setList(true)
-    }
+        setList(true);
+    };
 
     const handleLogClose = () => {
-        setList (false)
-    }
+        setList (false);
+    };
 
     const handleNewBid = async () => {
-
-        const response = await fetch('http://localhost:8080/create-listing', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                item_name: "Child slave",
-                item_description: "Straight from Mongolia, well disciplined",
-                start_date: "filler",
-                end_date: "???",
-                price: 1230.0,
-                photo: "b",
-            }),
-        });
-        if (!response.ok) {
-            console.log(response.ok)
-            throw new Error('User was not registered');
-        }
+        handleLogOpen();
+        // const response = await fetch('http://localhost:8080/create-listing', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         item_name: "Child slave",
+        //         item_description: "Straight from Mongolia, well disciplined",
+        //         start_date: "filler",
+        //         end_date: "???",
+        //         price: 1230.0,
+        //     }),
+        // });
+        // if (!response.ok) {
+        //     console.log(response.ok)
+        //     throw new Error('User was not registered');
+        // }
     };
     return (
             <>
@@ -42,6 +41,7 @@ const NewListingButton = (props) => {
                     sx={{
                         position: 'absolute',
                         right: 5,
+                        top: 80,
                         width: '150px',
                         height: '50px',
                     }}
