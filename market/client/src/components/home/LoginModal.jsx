@@ -27,7 +27,7 @@ const SignupModal = ({handleClose}) =>{
         });
 
         if (!response.ok) {
-            throw new Error('User was not registered');
+            throw new Error('User was not logged in');
         }
 
         console.log(response.json());
