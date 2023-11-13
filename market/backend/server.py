@@ -212,7 +212,7 @@ def addPhoto(listing, data, auth_token):
             return jsonify({"message": "No image uploaded"})
 
 #Helper function for the 3 auction pages - returns ALL listings 
-def postsFromDB():
+def totalListings():
     # Function returns a list of all listings
     ret_list = []
     all_posts = listings_collection.find({})
@@ -307,7 +307,7 @@ def userPostedAuctions():
 @app.route("/auctions", methods =['GET'])
 #start with sending ALL auctions - might need to change to just the ones still running later
 def totalAuctions():
-    allposts = postsFromDB()
+    allposts = totalListings()
     return jsonify({"message": "All auctions found", "auctions": allposts}) #should be a list of JSON dicts
 
 
