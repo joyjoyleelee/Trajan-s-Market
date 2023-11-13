@@ -45,6 +45,21 @@ def home():
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
+@app.route("/home/login") #index.html
+def logPage():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("home/login.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
+@app.route("/home/register") #index.html
+def regPage():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("home/register.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
 
 def check_auth(auth_tok, username):
     #auth_tok => string (from request)
