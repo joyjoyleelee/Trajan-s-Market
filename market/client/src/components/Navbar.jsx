@@ -3,10 +3,30 @@ import { AppBar, Toolbar, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    const handleLogout = () => {
-        // Add your logout logic here
 
-        console.log('Logging out...');
+    const deleteCookie = (cookieName) => {
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    };
+
+
+    const handleLogout = async () => {
+        // Add your logout logic here
+        deleteCookie("cookie_name")
+        const response = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body:{
+                Data: 'Delete the cookie'
+            },
+        });
+        if (!response.ok) {
+            throw new Error('User was not logged out');
+        }
+
+        const responseData = await response.json();
+        console.log(responseData);
     };
 
     return (

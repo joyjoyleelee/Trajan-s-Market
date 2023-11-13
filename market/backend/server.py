@@ -41,6 +41,12 @@ def home():
 #     response.headers["X-Content-Type-Options"] = "nosniff"
 #     return response
 
+@app.route('/logout', methods=['POST'])
+def logout():
+    response = make_response('Logged out successfully')
+    response.delete_cookie('auth_token', path='/')
+    return response
+
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
 @app.route("/register", methods =['POST'])
 def process_register():
@@ -113,7 +119,6 @@ def login():
             response.set_cookie("cookie_name", data['username'])
             auth_token_collection.insert_one(
                 {"username": data['username'], "auth_token": auth_token_hashed})
-            islogin =1
             return response
 
         else:
