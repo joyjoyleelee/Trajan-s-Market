@@ -35,6 +35,30 @@ xsrf_token_collection = db["xsrf"]
 # xsrf_token_collection.delete_many({})
 # MAKE SURE YOU REMOVE THE LINES ABOVE.
 
+def check_auth(auth_tok, username, collection_from_db):
+    #auth_tok => string (from request)
+    #username => string (from request)
+    #collection_from_db => auth_token_collection (collection object)
+    #good_or_nah = 0
+    record = collection_from_db.find_one({"username": username})
+    if record == None:
+        return 0
+    elif record['auth_token'] == auth_tok:
+        return 1
+    else:
+        return 0
+
+@app.route("/check_auth")
+def smd():
+    data = request.json
+    #not sure if auth_token can be accessed by data['auth_token'}{
+    return check_auth(data['auth_token'], data['username'],data['password'])
+
+
+
+    #return good_or_nah
+
+
 #Set up the home page ----------------------------------------------------------------------------------------------------------------------------
 @app.route("/") #index.html
 def home():
