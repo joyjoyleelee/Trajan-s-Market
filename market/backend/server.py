@@ -36,31 +36,26 @@ def home():
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
-# @app.route("/<path:file>")
-# def pathRoute(file):
-#     response = make_response(send_from_directory("static", file), 200)
-#     response.headers["X-Content-Type-Options"] = "nosniff"
-#     return response
 
-
-def check_auth(auth_tok, username, collection_from_db):
+def check_auth(auth_tok, username):
     #auth_tok => string (from request)
     #username => string (from request)
     #collection_from_db => auth_token_collection (collection object)
     #good_or_nah = 0
-    record = collection_from_db.find_one({"username": username})
+    record = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_tok.encode()).hexdigest()}) #hexdigest turns the bytes to a string
     if record == None:
         return 0
-    elif record['auth_token'] == auth_tok:
+    elif record['username'] == username:
         return 1
     else:
         return 0
 
+#
 @app.route("/check_auth")
 def smd():
     data = request.json
     #not sure if auth_token can be accessed by data['auth_token'}{
-    return check_auth(data['auth_token'], data['username'],data['password'])
+    return check_auth(data['auth_token'], data['username'])
 
 
 
@@ -152,8 +147,6 @@ def login():
     print(response)
     return response
 
-    print(response)
-    return response
 #Helper function for create listing
 def createImage(data, photo_data, content_length, content_type, auth_token):
     if(auth_token != None):
@@ -203,8 +196,7 @@ def createImage(data, photo_data, content_length, content_type, auth_token):
 @app.route("/create-listing", methods =['POST'])
 def createListing():
     # WHAT I NEED IN THE DATA: ********************************************************************************
-    # ID, Item name, Item description, Start date, End date, Price, Current user bidding, User who posted listing, 
-    # Photo, Headers (in dict)
+    # ID, Item name, Item description, End date, Price 
     print(f'request headers cookie: {request.headers.get("Cookies")}')
     data = request.json
     print(f'data: {data}')
@@ -212,6 +204,8 @@ def createListing():
     print(f'auth token: {auth_token}')
     #If user is authenticated
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+    if(user_data != None):
+        check_auth(auth_token, data['username'])
     if(user_data != None):
         current_user = user_data["_id"]
         print(f'current user: {current_user}')
