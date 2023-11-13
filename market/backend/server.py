@@ -42,32 +42,53 @@ def home():
 #     response.headers["X-Content-Type-Options"] = "nosniff"
 #     return response
 
+
+def check_auth(auth_tok, username, collection_from_db):
+    #auth_tok => string (from request)
+    #username => string (from request)
+    #collection_from_db => auth_token_collection (collection object)
+    #good_or_nah = 0
+    record = collection_from_db.find_one({"username": username})
+    if record == None:
+        return 0
+    elif record['auth_token'] == auth_tok:
+        return 1
+    else:
+        return 0
+
+@app.route("/check_auth")
+def smd():
+    data = request.json
+    #not sure if auth_token can be accessed by data['auth_token'}{
+    return check_auth(data['auth_token'], data['username'],data['password'])
+
+
+
+    #return good_or_nah
+
+
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
 @app.route("/register", methods =['POST'])
+
 def process_register():
-    data = request.json
-    if user_collection.find_one({"username": data.get("username")}) is None:
-        # Store username and salted, hashed password in database
-        salt = bcrypt.gensalt()
-        the_hash = bcrypt.hashpw(data.get("password").encode(), salt)
-        user_collection.insert_one({"username": data.get("username"), "password": the_hash})
 
-        # Possibly create new response headers before returning response
-        #response = make_response(render_template("index.html"), 200)
-        #response.headers["X-Content-Type-Options"] = "nosniff"
-        return jsonify({"message": "User successfully added", "code": 1})
-    # If the user already exists, give an error
-    else:
-        return jsonify({"message": "Username already exists", "code":0})
+        data = request.json
+        data['username'] = html.escape(data['username'])
+        data['password'] = html.escape(data['password'])
 
+        if user_collection.find_one({"username": data.get("username")}) is None:
+            # Store username and salted, hashed password in database
+            salt = bcrypt.gensalt()
+            the_hash = bcrypt.hashpw(data.get("password").encode(), salt)
+            user_collection.insert_one({"username": data.get("username"), "password": the_hash})
 
-
-# CODE BELOW: working register without any authentication
-# def process_register():
-#     print("Register path reached")
-#     data = request.json
-#     user_collection.insert_one(data)
-#     return jsonify({"message": "User successfully added"})
+            # Possibly create new response headers before returning response
+            # response = make_response(render_template("index.html"), 200)
+            # response.headers["X-Content-Type-Options"] = "nosniff"
+            return jsonify({"message": "User successfully added", "code": 1})
+        # If the user already exists, give an error
+        else:
+            return jsonify({"message": "Username already exists", "code": 0})
 
 
 
@@ -79,7 +100,10 @@ def login():
     # DB represents database
     print(request)
     data = request.json
+    data['username'] = html.escape(data['username'])
+    data['password'] = html.escape(data['password'])
     print(data)
+    islogin = 0
     user_database = user_collection.find_one({"username": data['username']})
     if (user_database == None):
         # Make response - NO USERS EXIST YET -> NOT GOOD
@@ -124,6 +148,9 @@ def login():
             response.headers["X-Content-Type-Options"] = "nosniff"
             return response
     #response.headers['thierry'] = islogin
+
+    print(response)
+    return response
 
     print(response)
     return response
@@ -173,17 +200,21 @@ def createImage(data, photo_data, content_length, content_type, auth_token):
             user_collection.find_one_and_update({"username": user_data["username"]}, {"$set":{"filename": filename}})
 
 #Create the listings-----------------------------------------------------------------------------------------------------------------------------
-@app.route("/create-listing", methods =['GET'])
+@app.route("/create-listing", methods =['POST'])
 def createListing():
     # WHAT I NEED IN THE DATA: ********************************************************************************
     # ID, Item name, Item description, Start date, End date, Price, Current user bidding, User who posted listing, 
     # Photo, Headers (in dict)
+    print(f'request headers cookie: {request.headers.get("Cookies")}')
     data = request.json
+    print(f'data: {data}')
     auth_token = data.headers.get("auth_token")
+    print(f'auth token: {auth_token}')
     #If user is authenticated
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
     if(user_data != None):
         current_user = user_data["_id"]
+        print(f'current user: {current_user}')
         #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
         listing = {"Item name": data.get("item_name"), 
                     "Item description": data.get("item_description"), 
@@ -193,12 +224,13 @@ def createListing():
                     "Current user bidding": None, 
                     "User who posted listing": current_user, 
                     }
+        print("user is authenticated woo")
         addPhoto(listing, data, auth_token)
         listings_collection.insert_one(listing)
         return jsonify(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
-@app.route("/add-photo", methods =['GET'])
+@app.route("/add-photo", methods =['POST'])
 def addPhoto(listing, data, auth_token):
     content_length = data.headers.get("content_length")
     content_type = data.headers.get("content_type")
