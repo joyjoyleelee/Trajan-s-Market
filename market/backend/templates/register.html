@@ -72,25 +72,13 @@
     <!-- Button container -->
     <div class="btn-container">
         <!-- Submit button -->
-        <button class="btn submit-btn" onclick="submitForm()">Register</button>
+        <button class="btn submit-btn" onclick="registerUser()">Register</button>
         <!-- Cancel button -->
         <a href="/" class="btn cancel-btn">Cancel</a>
     </div>
 </div>
 
-<script>
-    // Function to submit the form and access values
-    function submitForm() {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-
-        // You can access the entered values here (e.g., send them to a server)
-        console.log('Username:', username);
-        console.log('Password:', password);
-
-        // Add additional logic or redirect here if needed
-    }
-</script>
+<script src="{{url_for('static', filename='register.js')}}"></script>
 
 </body>
 </html>

@@ -119,7 +119,7 @@ def smd():
 
 
 #Set up the registration form ---------------------------------------------------------------------------------------------------------------------
-@app.route("/register", methods =['POST'])
+@app.route("/registerUser", methods =['POST'])
 
 def process_register():
 
@@ -144,7 +144,7 @@ def process_register():
 
 
 #Set up the login form-----------------------------------------------------------------------------------------------------------------------------
-@app.route("/login", methods =['POST'])
+@app.route("/loginUser", methods =['POST'])
 def login():
     print('marco')
     # print(request.get_data()) # -> b'username_login=hi&password_login=here'
