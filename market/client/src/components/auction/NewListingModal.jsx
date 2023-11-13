@@ -39,6 +39,7 @@ const NewListingModal = ({handleClose}) =>{
                 end_date: endDate,
                 price: price,
             }),
+            credentials: 'include',
         });
         if (!response.ok) {
             console.log(response.ok)
