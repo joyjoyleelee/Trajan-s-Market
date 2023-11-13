@@ -21,10 +21,10 @@ const SignupModal = ({handleClose}) =>{
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 username: usernames,
                 password: passwords,
-            },
+            }),
         });
 
         if (!response.ok) {

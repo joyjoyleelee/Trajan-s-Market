@@ -151,24 +151,27 @@ def login():
     print('marco')
     # print(request.get_data()) # -> b'username_login=hi&password_login=here'
     # DB represents database
+    print(request)
+    data = request.json
+    print(data)
     islogin = 0
-    user_database = user_collection.find_one({"username": request.form['username_login']})
+    user_database = user_collection.find_one({"username": data['username']})
     if (user_database == None):
         # Make response - NO USERS EXIST YET -> NOT GOOD
 
-        response = make_response(0, 404)
+        response = make_response('0', 404)
         response.headers["X-Content-Type-Options"] = "nosniff"
     else:
         # Access the password associated with the username
         database_password = user_database.get("password", b'none')
         print(database_password)
         # Access the password associated with what the user gave us
-        input_password = request.form['password_login'].encode()
+        input_password = data['password'].encode()
         print(input_password)
         # If the user does not exist in the database, then database_password = b"none"
         if (database_password == b'none'):
             # Make response if USER DOES NOT EXIST
-            response = make_response(0, 404)
+            response = make_response('0', 404)
             response.headers["X-Content-Type-Options"] = "nosniff"
         # Compare if the passwords are the same - returns True or False
         elif (bcrypt.checkpw(input_password, database_password)):
@@ -176,16 +179,16 @@ def login():
 
             # Make response if PASSWORDS MATCH
             #response = make_response(render_template("index.html"), 200)
-            response = make_response(1,200)
+            response = make_response('1',200)
 
             response.headers["X-Content-Type-Options"] = "nosniff"
 
             # Set the authentication cookie and add to auth_token database named "auth_tokens"
             auth_token_hashed = hashlib.sha256(auth_token.encode('utf-8')).digest()
             response.set_cookie("auth_token", str(auth_token), max_age=3600, httponly=True)
-            response.set_cookie("cookie_name", request.form['username_login'])
+            response.set_cookie("cookie_name", data['username'])
             auth_token_collection.insert_one(
-                {"username": request.form['username_login'], "auth_token": auth_token_hashed})
+                {"username": data['username'], "auth_token": auth_token_hashed})
             islogin =1
             return response
 
@@ -253,4 +256,4 @@ def addLike():
 
 
 
-app.run(host = "0.0.0.0", port = 8080)
+app.run(host = "0.0.0.0", port = 8080, debug = True)
