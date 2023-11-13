@@ -1,11 +1,13 @@
 import { Button, Container, Modal } from '@mui/material';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginModal from '../components/home/LoginModal';
 import SignupModal from '../components/home/SignupModal';
 
 const Home = () => {
   const [logOpen, setLog] = useState(false)
   const [regOpen, setReg] = useState(false)
+  const navigate = useNavigate();
 
   const handleLogOpen = () =>{
     setLog(true)
@@ -56,7 +58,7 @@ const Home = () => {
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'>
                     <div>
-                        <LoginModal open={logOpen} handleClose={handleLogClose} />
+                        <LoginModal open={logOpen} navigate={navigate} handleClose={handleLogClose} />
                     </div>
              </Modal>
              <Modal
