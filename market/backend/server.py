@@ -41,11 +41,11 @@ def cookieSearch(self, request):
 def home():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')
-    response = make_response(render_template("index.html"), 200)
+    response = make_response(render_template("createListing.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
-@app.route("/home/login") #index.html
+@app.route("/login") #index.html
 def logPage():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')
@@ -53,7 +53,7 @@ def logPage():
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
-@app.route("/home/register") #index.html
+@app.route("/register") #index.html
 def regPage():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')

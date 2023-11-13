@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+</head>
+<body>
+
+<!-- Back button in the upper left corner -->
+<a href="/Auction" class="btn cancel-btn">Back</a>
+
+<!-- File Upload Section -->
+<div style="margin-top: 20px;">
+    <label for="fileInput">Choose File:</label>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Upload Image</button>
+</div>
+
+<!-- Item Name text field -->
+<p style="margin-top: 20px;">Item Name</p>
+<input type="text" id="itemName">
+
+<!-- Item Description text field -->
+<p>Item Description</p>
+<input type="text" id="itemDescription">
+
+<!-- Date input -->
+<p>Date</p>
+<input type="date" id="itemDate">
+
+<!-- Price text field (accepts only numbers) -->
+<p>Price</p>
+<input type="number" id="itemPrice">
+
+<!-- Submit button with placeholder function -->
+<button style="margin-top: 40px; display: block;" onclick="submitForm()">Submit</button>
+
+<script>
+    // Function to go back (you can customize this function as needed)
+    function goBack() {
+        window.history.back();
+    }
+
+    // Function to handle file upload (you'll need to implement the backend logic separately)
+    function uploadFile() {
+        var fileInput = document.getElementById('fileInput');
+        var selectedFile = fileInput.files[0];
+        console.log('Selected File:', selectedFile);
+
+        // You can implement the backend logic to handle the file here
+        // For now, this function simply logs the selected file to the console
+    }
+
+    // Placeholder function for form submission
+    function submitForm() {
+        // Implement the logic for form submission here
+        // This is a placeholder function, and you should replace it with your actual submission logic
+        console.log('Form Submitted');
+    }
+</script>
+
+</body>
+</html>
