@@ -41,7 +41,7 @@ def cookieSearch(self, request):
 def home():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')
-    response = make_response(render_template("createListing.html"), 200)
+    response = make_response(render_template("index.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
@@ -49,7 +49,7 @@ def home():
 def logPage():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')
-    response = make_response(render_template("home/login.html"), 200)
+    response = make_response(render_template("login.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
@@ -57,7 +57,15 @@ def logPage():
 def regPage():
     #index_html
     #app = Flask(__name__, template_folder='../../client/public')
-    response = make_response(render_template("home/register.html"), 200)
+    response = make_response(render_template("register.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
+@app.route("/createListing") #index.html
+def create_Listing():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("createListing.html"), 200)
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
@@ -189,7 +197,7 @@ def createImage(data, photo_data, content_length, content_type, auth_token):
         boundary = content_type.split("boundary=")[1]
         print(f'BOUNDARY: {boundary}')
         split_data = received_data.split(boundary.encode())
-        user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+        user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
         current_user = user_data["_id"]
         print(f'current user: {current_user}')
 
@@ -220,7 +228,7 @@ def createImage(data, photo_data, content_length, content_type, auth_token):
 @app.route("/create-listing", methods =['POST'])
 def createListing():
     # WHAT I NEED IN THE DATA: ********************************************************************************
-    # ID, Item name, Item description, End date, Price 
+    # ID, Item name, Item description, End date, Price
     print(f'request headers cookie: {request.headers.get("Cookies")}')
     data = request.json
     print(f'data: {data}')
@@ -228,20 +236,20 @@ def createListing():
     auth_token = cookie_dict.get("auth_token")
     print(f'auth token: {auth_token}')
     #If user is authenticated
-    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
     if(user_data != None):
         check_auth(auth_token, data['username'])
         if(user_data != None):
             current_user = user_data["_id"]
             print(f'current user: {current_user}')
             #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
-            listing = {"Item name": data.get("item_name"), 
-                        "Item description": data.get("item_description"), 
-                        "Start date": str(datetime.now()), 
-                        "End date": data.get("end_date"), 
-                        "Price": data.get("price"), 
-                        "Current user bidding": None, 
-                        "User who posted listing": current_user, 
+            listing = {"Item name": data.get("item_name"),
+                        "Item description": data.get("item_description"),
+                        "Start date": str(datetime.now()),
+                        "End date": data.get("end_date"),
+                        "Price": data.get("price"),
+                        "Current user bidding": None,
+                        "User who posted listing": current_user,
                         }
             print("user is authenticated woo")
             addPhoto(listing, data, auth_token)
@@ -254,7 +262,7 @@ def addPhoto(listing, data, auth_token):
     content_length = data.headers.get("content_length")
     content_type = data.headers.get("content_type")
     #If a photo was uploaded AND user is authenticated -> create listing
-    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
     if(user_data != None):
         if(request.body != b''):
             photo = createImage(data, request.body, content_length, content_type, auth_token)
@@ -262,7 +270,7 @@ def addPhoto(listing, data, auth_token):
         else:
             return jsonify({"message": "No image uploaded"})
 
-#Helper function for the 3 auction pages - returns ALL listings 
+#Helper function for the 3 auction pages - returns ALL listings
 def totalListings():
     # Function returns a list of all listings
     ret_list = []
@@ -324,7 +332,7 @@ def postWinnings():
     #{"headers": {all the headers}}
     data = request.json
     auth_token = data.get("auth_token")
-    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
     #If the user is authenticated, then find all their won auctions
     if (user_data != None):
         current_user = user_data["_id"]
@@ -345,7 +353,7 @@ def userPostedAuctions():
     #{"headers": {all the headers}}
     data = request.json
     auth_token = data.get("auth_token")
-    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string   
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
     #If user is authenticated, then find all the auctions they posted
     if (user_data != None):
         current_user = user_data["_id"]
