@@ -9,6 +9,7 @@ app = Flask(__name__) #setting this equal to the file name (web.py)
 CORS(app)
 
 #Establish the mongo database
+#localhost for localhost mongo for docker
 mongo_client = MongoClient('localhost')
 db = mongo_client["colosseum"]
 chat_collection = db["chat"]
