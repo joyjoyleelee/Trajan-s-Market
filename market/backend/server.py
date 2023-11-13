@@ -170,11 +170,10 @@ def postsFromDB():
     return ret_list
 
 #Helper function for the 3 auction pages - determines whether an auction has ended or not
-#TRUE - if auction has ended, FALSE - if auction is ongoing
-def auctionEnded(dict):
+#TRUE - if auction has ended, F ALSE - if auction is ongoing
+def auctionEnded(end_date):
     #Auction date in the format: YYYY/MM/DD/HR/MN
-    end = dict.get("end_date")
-    end_list = end.split("/") #[year, month, day, hour, minute]
+    end_list = end_date.split("/") #[year, month, day, hour, minute]
     #Current date using datetime imports
     now = str(datetime.now()).split(" ") #['2023-11-11', '18:37:21.560362']
     current_date = now[0].split('-') # ['2023', '11', '11']
@@ -240,6 +239,7 @@ def userPostedAuctions():
     data = request.json
     auth_token = data.get("auth_token")
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string   
+    #If user is authenticated, then find all the auctions they posted
     if (user_data != None):
         current_user = user_data["_id"]
         user_posted = listings_collection.find({"User who posted listing": current_user})
