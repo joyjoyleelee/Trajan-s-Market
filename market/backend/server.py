@@ -35,6 +35,8 @@ xsrf_token_collection = db["xsrf"]
 # xsrf_token_collection.delete_many({})
 # MAKE SURE YOU REMOVE THE LINES ABOVE.
 
+
+
 def check_auth(auth_tok, username, collection_from_db):
     #auth_tok => string (from request)
     #username => string (from request)
@@ -125,6 +127,9 @@ def makePost():
 def process_register():
 
         data = request.json
+        data['username'] = html.escape(data['username'])
+        data['password'] = html.escape(data['password'])
+
         if user_collection.find_one({"username": data.get("username")}) is None:
             # Store username and salted, hashed password in database
             salt = bcrypt.gensalt()
@@ -177,6 +182,8 @@ def login():
     # DB represents database
     print(request)
     data = request.json
+    data['username'] = html.escape(data['username'])
+    data['password'] = html.escape(data['password'])
     print(data)
     islogin = 0
     user_database = user_collection.find_one({"username": data['username']})
