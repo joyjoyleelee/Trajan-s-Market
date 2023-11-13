@@ -10,7 +10,7 @@ from secrets import token_urlsafe
 
 
 app = Flask(__name__) #setting this equal to the file name (web.py)
-CORS(app)
+CORS(app, origins='http://localhost:3000/', supports_credentials=True)
 
 #Establish the mongo database
 #localhost for localhost mongo for docker
@@ -26,6 +26,15 @@ listings_collection = db["listings"]
 # auth_token_collection.delete_many({})
 # xsrf_token_collection.delete_many({})
 # MAKE SURE YOU REMOVE THE LINES ABOVE.
+
+#Splits up the cookie string into a useable cookie dictionary
+def cookieSearch(self, request):
+    cookies = request.headers.get("Cookie", "").replace("; ", ";").split(";") # -> [visits=0, auth_token=token]
+    cookie_dic = {}
+    for cookie in cookies:
+        c = cookie.split("=")
+        cookie_dic[c[0]] = c[1]
+    return cookie_dic
 
 #Set up the home page ----------------------------------------------------------------------------------------------------------------------------
 @app.route("/") #index.html
@@ -200,28 +209,29 @@ def createListing():
     print(f'request headers cookie: {request.headers.get("Cookies")}')
     data = request.json
     print(f'data: {data}')
-    auth_token = data.headers.get("auth_token")
+    cookie_dict = cookieSearch(request)
+    auth_token = cookie_dict.get("auth_token")
     print(f'auth token: {auth_token}')
     #If user is authenticated
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
     if(user_data != None):
         check_auth(auth_token, data['username'])
-    if(user_data != None):
-        current_user = user_data["_id"]
-        print(f'current user: {current_user}')
-        #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
-        listing = {"Item name": data.get("item_name"), 
-                    "Item description": data.get("item_description"), 
-                    "Start date": str(datetime.now()), 
-                    "End date": data.get("end_date"), 
-                    "Price": data.get("price"), 
-                    "Current user bidding": None, 
-                    "User who posted listing": current_user, 
-                    }
-        print("user is authenticated woo")
-        addPhoto(listing, data, auth_token)
-        listings_collection.insert_one(listing)
-        return jsonify(listing)
+        if(user_data != None):
+            current_user = user_data["_id"]
+            print(f'current user: {current_user}')
+            #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
+            listing = {"Item name": data.get("item_name"), 
+                        "Item description": data.get("item_description"), 
+                        "Start date": str(datetime.now()), 
+                        "End date": data.get("end_date"), 
+                        "Price": data.get("price"), 
+                        "Current user bidding": None, 
+                        "User who posted listing": current_user, 
+                        }
+            print("user is authenticated woo")
+            addPhoto(listing, data, auth_token)
+            listings_collection.insert_one(listing)
+            return jsonify(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/add-photo", methods =['POST'])
