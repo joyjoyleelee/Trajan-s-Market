@@ -73,8 +73,7 @@ def process_register():
 
 #Helper function for create listing
 def createImage(data, photo_data, content_length, content_type, auth_token):
-    auth_token = data.headers.get("auth_token")
-    if( auth_token != None):
+    if(auth_token != None):
         received_data = b''
         #If the length is less than 2048, we can read it in one go
         if content_length <= 2048:
@@ -124,34 +123,37 @@ def createListing():
     # ID, Item name, Item description, Start date, End date, Price, Current user bidding, User who posted listing, 
     # Photo, Headers (in dict)
     data = request.json
-    photo_data = data.get("photo") #assuming it's in the format of a byte string: b''
-    content_length = data.headers.get("content_length")
-    content_type = data.headers.get("content_type")
     auth_token = data.headers.get("auth_token")
-    #If a photo was uploaded AND user is authenticated -> create listing
+    #If user is authenticated
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
     if(user_data != None):
-        if(photo_data != b''):
-            createImage(data, photo_data, content_length, content_type, auth_token)
-        else:
-            return jsonify({"message": "No image uploaded"})
+        current_user = user_data["_id"]
         #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
         listing = {"Item name": data.get("item_name"), 
                     "Item description": data.get("item_description"), 
-                    "Start date": data.get("start_date"), 
+                    "Start date": str(datetime.now()), 
                     "End date": data.get("end_date"), 
                     "Price": data.get("price"), 
                     "Current user bidding": None, 
-                    "User who posted listing": data.get("user_posted"), 
+                    "User who posted listing": current_user, 
                     }
-        addPhoto(listing)
-        listings_collection.insert_one(listing)
-        return jsonify(listing)
+    addPhoto(listing, data, auth_token)
+    listings_collection.insert_one(listing)
+    return jsonify(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
-# @app.route("/add-photo", methods =['GET'])
-# def addPhoto(listing):
-    
+@app.route("/add-photo", methods =['GET'])
+def addPhoto(listing, data, auth_token):
+    content_length = data.headers.get("content_length")
+    content_type = data.headers.get("content_type")
+    #If a photo was uploaded AND user is authenticated -> create listing
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string    
+    if(user_data != None):
+        if(request.body != b''):
+            photo = createImage(data, request.body, content_length, content_type, auth_token)
+            listing["Photo": photo]
+        else:
+            return jsonify({"message": "No image uploaded"})
 
 #Helper function for the 3 auction pages - returns ALL listings 
 def postsFromDB():
