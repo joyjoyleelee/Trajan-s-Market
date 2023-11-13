@@ -20,17 +20,17 @@ const SignupModal = ({handleClose}) =>{
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 username: usernames,
                 password: passwords,
-            },
+            }),
         });
-
         if (!response.ok) {
-            throw new Error('User was not registered');
+            throw new Error('User was not logged in');
         }
 
-        console.log(response.json());
+        const responseData = await response.json();
+        console.log(responseData);
         handleClose();
     }
 

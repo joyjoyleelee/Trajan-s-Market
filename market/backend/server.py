@@ -5,12 +5,15 @@ from datetime import date, datetime #this is to keep track of the dates
 import bcrypt
 import hashlib
 import html
+import hashlib
+from secrets import token_urlsafe
 
 
 app = Flask(__name__) #setting this equal to the file name (web.py)
 CORS(app)
 
 #Establish the mongo database
+#localhost for localhost mongo for docker
 mongo_client = MongoClient('localhost')
 db = mongo_client["colosseum"]
 user_collection = db["users"]
@@ -70,7 +73,60 @@ def process_register():
 
 #Set up the login form-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/login", methods =['POST'])
+def login():
+    print('marco')
+    # print(request.get_data()) # -> b'username_login=hi&password_login=here'
+    # DB represents database
+    print(request)
+    data = request.json
+    print(data)
+    user_database = user_collection.find_one({"username": data['username']})
+    if (user_database == None):
+        # Make response - NO USERS EXIST YET -> NOT GOOD
 
+        response = make_response('0', 404)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+    else:
+        # Access the password associated with the username
+        database_password = user_database.get("password", b'none')
+        print(database_password)
+        # Access the password associated with what the user gave us
+        input_password = data['password'].encode()
+        print(input_password)
+        # If the user does not exist in the database, then database_password = b"none"
+        if (database_password == b'none'):
+            # Make response if USER DOES NOT EXIST
+            response = make_response('0', 404)
+            response.headers["X-Content-Type-Options"] = "nosniff"
+        # Compare if the passwords are the same - returns True or False
+        elif (bcrypt.checkpw(input_password, database_password)):
+            auth_token = token_urlsafe(13)  # creates unique token, the 13 is the entropy
+
+            # Make response if PASSWORDS MATCH
+            #response = make_response(render_template("index.html"), 200)
+            response = make_response('1',200)
+
+            response.headers["X-Content-Type-Options"] = "nosniff"
+
+            # Set the authentication cookie and add to auth_token database named "auth_tokens"
+            auth_token_hashed = hashlib.sha256(auth_token.encode('utf-8')).digest()
+            response.set_cookie("auth_token", str(auth_token), max_age=3600, httponly=True)
+            response.set_cookie("cookie_name", data['username'])
+            auth_token_collection.insert_one(
+                {"username": data['username'], "auth_token": auth_token_hashed})
+            islogin =1
+            return response
+
+        else:
+            # Make response if PASSWORDS DO NOT MATCH
+            #response = make_response(render_template("index.html"), 404)
+            response = make_response(0, 404)
+            response.headers["X-Content-Type-Options"] = "nosniff"
+            return response
+    #response.headers['thierry'] = islogin
+
+    print(response)
+    return response
 #Helper function for create listing
 def createImage(data, photo_data, content_length, content_type, auth_token):
     if(auth_token != None):

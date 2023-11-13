@@ -1,6 +1,7 @@
 import React from 'react';
 import Listing from '../components/auction/Listing';
 import Navbar from '../components/Navbar'
+import NewListingButton from '../components/auction/NewListingButton'
 
 
 const Auction = () => {
@@ -30,6 +31,7 @@ const Auction = () => {
     return (
         <>
             <Navbar></Navbar>
+            <NewListingButton></NewListingButton>
             <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
                 {tempPropsList.map((tempProp, index) => (
                     <Listing key={index} {...tempProp} />
