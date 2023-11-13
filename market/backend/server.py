@@ -69,6 +69,30 @@ def create_Listing():
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
 
+@app.route("/auction") #index.html
+def auction():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("auction.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
+@app.route("/auctionWon") #index.html
+def auctionWon():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("auctionWon.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
+@app.route("/myAuction") #index.html
+def myAuction():
+    #index_html
+    #app = Flask(__name__, template_folder='../../client/public')
+    response = make_response(render_template("myAuction.html"), 200)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
 def check_auth(auth_tok, username):
     #auth_tok => string (from request)
     #username => string (from request)
