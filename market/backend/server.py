@@ -137,9 +137,9 @@ def createListing():
                     "Current user bidding": None, 
                     "User who posted listing": current_user, 
                     }
-    addPhoto(listing, data, auth_token)
-    listings_collection.insert_one(listing)
-    return jsonify(listing)
+        addPhoto(listing, data, auth_token)
+        listings_collection.insert_one(listing)
+        return jsonify(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/add-photo", methods =['GET'])
@@ -151,7 +151,7 @@ def addPhoto(listing, data, auth_token):
     if(user_data != None):
         if(request.body != b''):
             photo = createImage(data, request.body, content_length, content_type, auth_token)
-            listing["Photo": photo]
+            listing["Photo"] = photo
         else:
             return jsonify({"message": "No image uploaded"})
 
@@ -222,7 +222,6 @@ def postWinnings():
     #If the user is authenticated, then find all their won auctions
     if (user_data != None):
         current_user = user_data["_id"]
-
         actually_won = []
         maybe_won = listings_collection.find({"Current user bidding": current_user})
         for listing in maybe_won:
@@ -239,6 +238,14 @@ def userPostedAuctions():
     # WHAT I NEED IN THE DATA: **********************
     #{"headers": {all the headers}}
     data = request.json
+    auth_token = data.get("auth_token")
+    user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string   
+    if (user_data != None):
+        current_user = user_data["_id"]
+        user_posted = listings_collection.find({"User who posted listing": current_user})
+        return jsonify({"message": "Posted auctions found", "auctions": user_posted})
+    else:
+        return jsonify({"message": "No auctions found"})
 
 
 @app.route("/auctions", methods =['GET'])
