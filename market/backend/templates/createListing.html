@@ -36,29 +36,9 @@
 <!-- Submit button with placeholder function -->
 <button style="margin-top: 40px; display: block;" onclick="submitForm()">Submit</button>
 
-<script>
-    // Function to go back (you can customize this function as needed)
-    function goBack() {
-        window.history.back();
-    }
+<script src="{{url_for('static', filename='createListing.js')}}"></script>
+<script src="{{url_for('static', filename='uploadFile.js')}}"></script>
 
-    // Function to handle file upload (you'll need to implement the backend logic separately)
-    function uploadFile() {
-        var fileInput = document.getElementById('fileInput');
-        var selectedFile = fileInput.files[0];
-        console.log('Selected File:', selectedFile);
-
-        // You can implement the backend logic to handle the file here
-        // For now, this function simply logs the selected file to the console
-    }
-
-    // Placeholder function for form submission
-    function submitForm() {
-        // Implement the logic for form submission here
-        // This is a placeholder function, and you should replace it with your actual submission logic
-        console.log('Form Submitted');
-    }
-</script>
 
 </body>
 </html>
