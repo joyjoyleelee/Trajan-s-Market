@@ -1,9 +1,8 @@
 from flask import Flask, render_template, make_response, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
-from datetime import date, datetime #this is to keep track of the dates
+from datetime import datetime #this is to keep track of the dates
 import bcrypt
-import hashlib
 import html
 import hashlib
 from secrets import token_urlsafe
