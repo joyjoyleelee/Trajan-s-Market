@@ -15,6 +15,7 @@
     <label for="fileInput">Choose File:</label>
     <input type="file" id="fileInput">
     <button onclick="uploadFile()">Upload Image</button>
+    <script src="{{url_for('static', filename='uploadFile.js')}}"></script>
 </div>
 
 <!-- Item Name text field -->
@@ -34,10 +35,10 @@
 <input type="number" id="itemPrice">
 
 <!-- Submit button with placeholder function -->
-<button style="margin-top: 40px; display: block;" onclick="submitForm()">Submit</button>
-
+<button style="margin-top: 40px; display: block;" onclick="submitItem()">Submit</button>
 <script src="{{url_for('static', filename='createListing.js')}}"></script>
-<script src="{{url_for('static', filename='uploadFile.js')}}"></script>
+
+
 
 
 </body>
