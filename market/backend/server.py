@@ -9,7 +9,7 @@ from secrets import token_urlsafe
 
 
 app = Flask(__name__) #setting this equal to the file name (web.py)
-CORS(app, origins='http://localhost:3000/', supports_credentials=True)
+#CORS(app, origins='http://localhost:3000/', supports_credentials=True)
 
 #Establish the mongo database
 #localhost for localhost mongo for docker
@@ -18,7 +18,7 @@ db = mongo_client["colosseum"]
 user_collection = db["users"]
 auth_token_collection = db["auth_tokens"]
 listings_collection = db["listings"]
-
+current_user1 = ""
 # Delete collection records. --- ALERT """ FOR TESTING ONLY MAKE SURE TO REMOVE
 # chat_collection.delete_many({})
 # user_collection.delete_many({})
@@ -27,7 +27,7 @@ listings_collection = db["listings"]
 # MAKE SURE YOU REMOVE THE LINES ABOVE.
 
 #Splits up the cookie string into a useable cookie dictionary
-def cookieSearch(self, request):
+def cookieSearch(request):
     cookies = request.headers.get("Cookie", "").replace("; ", ";").split(";") # -> [visits=0, auth_token=token]
     cookie_dic = {}
     for cookie in cookies:
@@ -152,6 +152,10 @@ def login():
     data = request.json
     data['username'] = html.escape(data['username'])
     data['password'] = html.escape(data['password'])
+    global current_user1
+    current_user1 = data['username']
+    print("data username",data['username'])
+    print("current user1",current_user1)
     print(data)
     islogin = 0
     user_database = user_collection.find_one({"username": data['username']})
@@ -183,7 +187,7 @@ def login():
             response.headers["X-Content-Type-Options"] = "nosniff"
 
             # Set the authentication cookie and add to auth_token database named "auth_tokens"
-            auth_token_hashed = hashlib.sha256(auth_token.encode('utf-8')).digest()
+            auth_token_hashed = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
             response.set_cookie("auth_token", str(auth_token), max_age=3600, httponly=True)
             response.set_cookie("cookie_name", data['username'])
             auth_token_collection.insert_one(
@@ -260,8 +264,11 @@ def createListing():
     print(f'auth token: {auth_token}')
     #If user is authenticated
     user_data = auth_token_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode()).hexdigest()}) #hexdigest turns the bytes to a string
+    print(user_data)
     if(user_data != None):
-        check_auth(auth_token, data['username'])
+        global current_user1
+        print("this is current user rn ",current_user1)
+        check_auth(auth_token, current_user1)
         if(user_data != None):
             current_user = user_data["_id"]
             print(f'current user: {current_user}')
@@ -277,6 +284,7 @@ def createListing():
             print("user is authenticated woo")
             addPhoto(listing, data, auth_token)
             listings_collection.insert_one(listing)
+            print("I am listings",listing)
             return jsonify(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
