@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, make_response, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -273,19 +275,20 @@ def createListing():
             current_user = user_data["_id"]
             print(f'current user: {current_user}')
             #NOTE: gonna need to reformat date in order to compare -> WEBSOCKETS
-            listing = {"Item name": data.get("item_name"),
-                        "Item description": data.get("item_description"),
+            listing = {"Item name": data.get("itemName"),
+                        "Item description": data.get("item description"),
                         "Start date": str(datetime.now()),
-                        "End date": data.get("end_date"),
-                        "Price": data.get("price"),
+                        "End date": data.get("date"),
+                        "Price": data.get("itemPrice"),
                         "Current user bidding": None,
-                        "User who posted listing": current_user,
+                        "User who posted listing":  current_user1,
                         }
             print("user is authenticated woo")
-            addPhoto(listing, data, auth_token)
+            #addPhoto(listing, data, auth_token)
             listings_collection.insert_one(listing)
             print("I am listings",listing)
-            return jsonify(listing)
+            listing.pop("_id", "")
+            return json.dumps(listing)
 
 #Create the photo-----------------------------------------------------------------------------------------------------------------------------
 @app.route("/add-photo", methods =['POST'])
