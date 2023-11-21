@@ -311,11 +311,23 @@ def totalListings():
     all_posts = listings_collection.find({})
     for p in all_posts:
         #Escape HTML in the posts
-        p["item_name"] = html.escape(p["item_name"])
-        p["item_description"] = html.escape(p["item_description"])
-        p["current_user_bidding"] = html.escape(p["current_user_bidding"])
-        p["user_posted"] = html.escape(p["user_posted"])
-        ret_list.append(jsonify(p))
+        p.pop("_id", "")
+        p["Item name"] = html.escape(p["Item name"])
+        print(  p["Item name"] )
+        if p["Item description"] is None:
+            p["Item description"] = p["Item description"]
+        else:
+            p["Item description"] = html.escape(p["Item description"])
+        if  p[ "Current user bidding"] is None:
+            p["Current user bidding"] =   p["Current user bidding"]
+        else:
+            p["Current user bidding"] = html.escape(p["Current user bidding"])
+        if  p["User who posted listing"]  is None:
+            p["User who posted listing"] =  p["User who posted listing"]
+        else:
+            p["User who posted listing"] = html.escape(p["User who posted listing"])
+        print(p)
+        ret_list.append(p)
     return ret_list
 
 #Helper function for the 3 auction pages - determines whether an auction has ended or not
@@ -401,7 +413,8 @@ def userPostedAuctions():
 #start with sending ALL auctions - might need to change to just the ones still running later
 def totalAuctions():
     allposts = totalListings()
-    return jsonify({"message": "All auctions found", "auctions": allposts}) #should be a list of JSON dicts
+    print("i am all posts",allposts)
+    return json.dumps({"message": "All auctions found", "auctions": allposts}) #should be a list of JSON dicts
 
 
 
